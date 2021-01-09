@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GOTurystyka.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ namespace GOTurystyka.Contexts
 {
     public class GOTurystykaDBContext: DbContext
     {
-
+        public DbSet<Foreman> Foremen { get; set; }
+        //public DbSet<> MyProperty { get; set; }
     }
 }

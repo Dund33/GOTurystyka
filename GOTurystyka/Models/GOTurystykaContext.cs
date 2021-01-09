@@ -4,17 +4,20 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace GOTurystyka.Model
+namespace GOTurystyka.Models
 {
     public partial class GOTurystykaContext : DbContext
     {
-        public GOTurystykaContext()
+        private string _server;
+        public GOTurystykaContext(string server)
         {
+            _server = server;
         }
 
-        public GOTurystykaContext(DbContextOptions<GOTurystykaContext> options)
+        public GOTurystykaContext(DbContextOptions<GOTurystykaContext> options, string server)
             : base(options)
         {
+            _server = server;
         }
 
         public virtual DbSet<Foreman> Foremen { get; set; }
@@ -38,7 +41,7 @@ namespace GOTurystyka.Model
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=unclelukes.site;Database=GOTurystyka;user id=sa;password=SecureMSSQLPassword34!");
+                optionsBuilder.UseSqlServer(_server);
             }
         }
 

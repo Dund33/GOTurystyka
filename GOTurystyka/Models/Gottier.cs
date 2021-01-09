@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace GOTurystyka.Model
+namespace GOTurystyka.Models
 {
     public partial class Gottier
     {

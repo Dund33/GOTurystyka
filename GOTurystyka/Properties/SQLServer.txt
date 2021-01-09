@@ -1,0 +1,1 @@
+﻿Server=unclelukes.site;Database=GOTurystyka;user id=sa;password=SecureMSSQLPassword34!
