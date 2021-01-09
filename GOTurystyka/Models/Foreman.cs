@@ -10,6 +10,7 @@ namespace GOTurystyka.Models
         public Foreman()
         {
             LicensesFors = new HashSet<LicensesFor>();
+            Segments = new HashSet<Segment>();
         }
 
         public int Id { get; set; }
@@ -25,5 +26,6 @@ namespace GOTurystyka.Models
         public bool Active { get; set; }
 
         public virtual ICollection<LicensesFor> LicensesFors { get; set; }
+        public virtual ICollection<Segment> Segments { get; set; }
     }
 }

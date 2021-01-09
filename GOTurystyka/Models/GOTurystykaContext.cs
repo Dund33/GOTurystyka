@@ -17,6 +17,8 @@ namespace GOTurystyka.Models
         {
         }
 
+        public virtual DbSet<Admin> Admins { get; set; }
+        public virtual DbSet<Commission> Commissions { get; set; }
         public virtual DbSet<Foreman> Foremen { get; set; }
         public virtual DbSet<Got3> Got3s { get; set; }
         public virtual DbSet<Got4> Got4s { get; set; }
@@ -32,10 +34,69 @@ namespace GOTurystyka.Models
         public virtual DbSet<TouristGot> TouristGots { get; set; }
         public virtual DbSet<Trip> Trips { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UsersInTrip> UsersInTrips { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=unclelukes.site;Database=GOTurystyka;user id=sa;password=SecureMSSQLPassword34!");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
+            modelBuilder.Entity<Admin>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.DateOfBirth).HasColumnType("date");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(128);
+
+                entity.Property(e => e.Login)
+                    .IsRequired()
+                    .HasMaxLength(64);
+
+                entity.Property(e => e.Password)
+                    .IsRequired()
+                    .HasMaxLength(64);
+
+                entity.Property(e => e.Pesel)
+                    .IsRequired()
+                    .HasMaxLength(13)
+                    .HasColumnName("PESEL");
+
+                entity.Property(e => e.PhoneNumber)
+                    .IsRequired()
+                    .HasMaxLength(12);
+            });
+
+            modelBuilder.Entity<Commission>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.DateOfBirth).HasColumnType("date");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.LastName).HasMaxLength(255);
+
+                entity.Property(e => e.Name).HasMaxLength(255);
+
+                entity.Property(e => e.PhoneNumber).HasMaxLength(12);
+
+                entity.Property(e => e.QuitOfficeDate).HasColumnType("date");
+
+                entity.Property(e => e.TakenTheOfficeDate).HasColumnType("date");
+            });
 
             modelBuilder.Entity<Foreman>(entity =>
             {
@@ -145,6 +206,12 @@ namespace GOTurystyka.Models
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(128);
+
+                entity.HasOne(d => d.Admin)
+                    .WithMany(p => p.Points)
+                    .HasForeignKey(d => d.AdminId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Points_Admins");
             });
 
             modelBuilder.Entity<PointsInSegment>(entity =>
@@ -186,6 +253,12 @@ namespace GOTurystyka.Models
             modelBuilder.Entity<Segment>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne(d => d.Foreman)
+                    .WithMany(p => p.Segments)
+                    .HasForeignKey(d => d.ForemanId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Segments_Foremen");
             });
 
             modelBuilder.Entity<SegmentsInRoute>(entity =>
@@ -272,6 +345,12 @@ namespace GOTurystyka.Models
 
                 entity.Property(e => e.Gotid).HasColumnName("GOTId");
 
+                entity.HasOne(d => d.Commision)
+                    .WithMany(p => p.TouristGots)
+                    .HasForeignKey(d => d.CommisionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_TouristGOTs_Commissions");
+
                 entity.HasOne(d => d.Got)
                     .WithMany(p => p.TouristGots)
                     .HasForeignKey(d => d.Gotid)
@@ -301,6 +380,12 @@ namespace GOTurystyka.Models
                     .HasForeignKey(d => d.RouteId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Trips_Routes");
+
+                entity.HasOne(d => d.Tourist)
+                    .WithMany(p => p.Trips)
+                    .HasForeignKey(d => d.TouristId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Trips_Tourists");
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -324,6 +409,23 @@ namespace GOTurystyka.Models
                 entity.Property(e => e.PhoneNumber)
                     .IsRequired()
                     .HasMaxLength(255);
+            });
+
+            modelBuilder.Entity<UsersInTrip>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.TripId });
+
+                entity.HasOne(d => d.Trip)
+                    .WithMany(p => p.UsersInTrips)
+                    .HasForeignKey(d => d.TripId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UsersInTrips_Trips");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UsersInTrips)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UsersInTrips_Users");
             });
 
             OnModelCreatingPartial(modelBuilder);

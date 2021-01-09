@@ -1,4 +1,3 @@
-using GOTurystyka.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,7 +27,7 @@ namespace GOTurystyka
         {
             string server = File.ReadAllText("Properties/SQLServer.txt");
             services.AddControllersWithViews();
-            services.AddDbContext<GOTurystykaContext>(options => options.UseSqlServer(server));
+            //services.AddDbContext<GOTurystykaContext>(options => options.UseSqlServer(server));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -5,21 +5,23 @@ using System.Collections.Generic;
 
 namespace GOTurystyka.Models
 {
-    public partial class User
+    public partial class Admin
     {
-        public User()
+        public Admin()
         {
-            UsersInTrips = new HashSet<UsersInTrip>();
+            Points = new HashSet<Point>();
         }
 
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string LastName { get; set; }
+        public string Pesel { get; set; }
+        public int WorkerId { get; set; }
+        public string Login { get; set; }
+        public string Password { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string PhoneNumber { get; set; }
         public bool LoggedIn { get; set; }
         public string Email { get; set; }
 
-        public virtual ICollection<UsersInTrip> UsersInTrips { get; set; }
+        public virtual ICollection<Point> Points { get; set; }
     }
 }

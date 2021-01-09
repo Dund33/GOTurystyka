@@ -17,7 +17,9 @@ namespace GOTurystyka.Models
         public float Longitude { get; set; }
         public float Latitude { get; set; }
         public float Height { get; set; }
+        public int AdminId { get; set; }
 
+        public virtual Admin Admin { get; set; }
         public virtual ICollection<PointsInSegment> PointsInSegments { get; set; }
     }
 }

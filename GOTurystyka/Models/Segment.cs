@@ -23,6 +23,7 @@ namespace GOTurystyka.Models
         public int ForemanId { get; set; }
         public int? LicenseForId { get; set; }
 
+        public virtual Foreman Foreman { get; set; }
         public virtual ICollection<LicensesFor> LicensesFors { get; set; }
         public virtual ICollection<PointsInSegment> PointsInSegments { get; set; }
         public virtual ICollection<SegmentsInRoute> SegmentsInRoutes { get; set; }

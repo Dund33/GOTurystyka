@@ -14,6 +14,7 @@ namespace GOTurystyka.Models
         public int CommisionId { get; set; }
         public int TouristId { get; set; }
 
+        public virtual Commission Commision { get; set; }
         public virtual Got3 Got { get; set; }
         public virtual Tourist Tourist { get; set; }
     }

@@ -12,6 +12,7 @@ namespace GOTurystyka.Models
             Routes = new HashSet<Route>();
             TemporaryPoints = new HashSet<TemporaryPoint>();
             TouristGots = new HashSet<TouristGot>();
+            Trips = new HashSet<Trip>();
         }
 
         public int Id { get; set; }
@@ -28,5 +29,6 @@ namespace GOTurystyka.Models
         public virtual ICollection<Route> Routes { get; set; }
         public virtual ICollection<TemporaryPoint> TemporaryPoints { get; set; }
         public virtual ICollection<TouristGot> TouristGots { get; set; }
+        public virtual ICollection<Trip> Trips { get; set; }
     }
 }
