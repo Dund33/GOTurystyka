@@ -12,15 +12,18 @@ namespace GOTurystyka.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly GOTurystykaContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, GOTurystykaContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var foreman = _context.Foremen.Where(foreman => foreman.Id == 1).SingleOrDefault();
+            return Ok(foreman.Name);
         }
 
         public IActionResult Privacy()
