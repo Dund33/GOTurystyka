@@ -23,6 +23,7 @@
   <ItemGroup>
     <Folder Include="Contexts\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Home\" />
   </ItemGroup>
 
 </Project>

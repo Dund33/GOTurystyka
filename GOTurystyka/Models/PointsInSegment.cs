@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-#nullable disable
+﻿#nullable disable
 
 namespace GOTurystyka.Models
 {
-    public partial class PointsInSegment
+    public class PointsInSegment
     {
         public int SegmentId { get; set; }
         public int PointId { get; set; }

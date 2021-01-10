@@ -1,12 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
 namespace GOTurystyka.Models
 {
-    public partial class GOTurystykaContext : DbContext
+    public class GOTurystykaContext : DbContext
     {
         public GOTurystykaContext()
         {
@@ -40,8 +39,9 @@ namespace GOTurystyka.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=unclelukes.site;Database=GOTurystyka;user id=sa;password=SecureMSSQLPassword34!");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https: //go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer(
+                    "Server=unclelukes.site;Database=GOTurystyka;user id=sa;password=SecureMSSQLPassword34!");
             }
         }
 
@@ -176,7 +176,7 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<LicensesFor>(entity =>
             {
-                entity.HasKey(e => new { e.ForemanId, e.SegmentId });
+                entity.HasKey(e => new {e.ForemanId, e.SegmentId});
 
                 entity.ToTable("LicensesFor");
 
@@ -216,7 +216,7 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<PointsInSegment>(entity =>
             {
-                entity.HasKey(e => new { e.SegmentId, e.PointId });
+                entity.HasKey(e => new {e.SegmentId, e.PointId});
 
                 entity.HasOne(d => d.Point)
                     .WithMany(p => p.PointsInSegments)
@@ -263,7 +263,7 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<SegmentsInRoute>(entity =>
             {
-                entity.HasKey(e => new { e.RouteId, e.SegmentId });
+                entity.HasKey(e => new {e.RouteId, e.SegmentId});
 
                 entity.HasOne(d => d.Route)
                     .WithMany(p => p.SegmentsInRoutes)
@@ -413,7 +413,7 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<UsersInTrip>(entity =>
             {
-                entity.HasKey(e => new { e.UserId, e.TripId });
+                entity.HasKey(e => new {e.UserId, e.TripId});
 
                 entity.HasOne(d => d.Trip)
                     .WithMany(p => p.UsersInTrips)
@@ -431,6 +431,9 @@ namespace GOTurystyka.Models
             OnModelCreatingPartial(modelBuilder);
         }
 
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+        private void OnModelCreatingPartial(ModelBuilder modelBuilder)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

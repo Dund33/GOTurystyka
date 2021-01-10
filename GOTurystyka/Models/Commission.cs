@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace GOTurystyka.Models
 {
-    public partial class Commission
+    public class Commission
     {
         public Commission()
         {

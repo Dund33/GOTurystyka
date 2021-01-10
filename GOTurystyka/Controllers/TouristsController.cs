@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using GOTurystyka.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GOTurystyka.Controllers
 {
@@ -27,17 +24,11 @@ namespace GOTurystyka.Controllers
         // GET: Tourists/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var tourist = await _context.Tourists
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (tourist == null)
-            {
-                return NotFound();
-            }
+            if (tourist == null) return NotFound();
 
             return View(tourist);
         }
@@ -53,7 +44,9 @@ namespace GOTurystyka.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,LastName,DateOfBirth,PhoneNumber,LoggedIn,Email,Login,Password,Points")] Tourist tourist)
+        public async Task<IActionResult> Create(
+            [Bind("Id,Name,LastName,DateOfBirth,PhoneNumber,LoggedIn,Email,Login,Password,Points")]
+            Tourist tourist)
         {
             if (ModelState.IsValid)
             {
@@ -61,22 +54,17 @@ namespace GOTurystyka.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(tourist);
         }
 
         // GET: Tourists/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var tourist = await _context.Tourists.FindAsync(id);
-            if (tourist == null)
-            {
-                return NotFound();
-            }
+            if (tourist == null) return NotFound();
             return View(tourist);
         }
 
@@ -85,12 +73,11 @@ namespace GOTurystyka.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,LastName,DateOfBirth,PhoneNumber,LoggedIn,Email,Login,Password,Points")] Tourist tourist)
+        public async Task<IActionResult> Edit(int id,
+            [Bind("Id,Name,LastName,DateOfBirth,PhoneNumber,LoggedIn,Email,Login,Password,Points")]
+            Tourist tourist)
         {
-            if (id != tourist.Id)
-            {
-                return NotFound();
-            }
+            if (id != tourist.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -102,39 +89,31 @@ namespace GOTurystyka.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!TouristExists(tourist.Id))
-                    {
                         return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(tourist);
         }
 
         // GET: Tourists/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var tourist = await _context.Tourists
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (tourist == null)
-            {
-                return NotFound();
-            }
+            if (tourist == null) return NotFound();
 
             return View(tourist);
         }
 
         // POST: Tourists/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

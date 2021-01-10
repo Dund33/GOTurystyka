@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GOTurystyka.Models.Segment>
+﻿@model IEnumerable<Segment>
 
 @{
     ViewData["Title"] = "Index";
@@ -11,33 +11,34 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Points)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Length)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HasPoints)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PointsDir1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PointsDir2)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LicenseForId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Foreman)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Points)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Length)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HasPoints)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PointsDir1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PointsDir2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LicenseForId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Foreman)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Points)
@@ -66,6 +67,6 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

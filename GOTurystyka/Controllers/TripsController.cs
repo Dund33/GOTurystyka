@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using GOTurystyka.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using GOTurystyka.Models;
 
 namespace GOTurystyka.Controllers
 {
@@ -28,19 +26,13 @@ namespace GOTurystyka.Controllers
         // GET: Trips/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var trip = await _context.Trips
                 .Include(t => t.Route)
                 .Include(t => t.Tourist)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (trip == null)
-            {
-                return NotFound();
-            }
+            if (trip == null) return NotFound();
 
             return View(trip);
         }
@@ -58,7 +50,8 @@ namespace GOTurystyka.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Date,Ended,Confirmed,RouteId,TouristId")] Trip trip)
+        public async Task<IActionResult> Create([Bind("Id,Name,Date,Ended,Confirmed,RouteId,TouristId")]
+            Trip trip)
         {
             if (ModelState.IsValid)
             {
@@ -66,6 +59,7 @@ namespace GOTurystyka.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["RouteId"] = new SelectList(_context.Routes, "Id", "Name", trip.RouteId);
             ViewData["TouristId"] = new SelectList(_context.Tourists, "Id", "Email", trip.TouristId);
             return View(trip);
@@ -74,16 +68,10 @@ namespace GOTurystyka.Controllers
         // GET: Trips/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var trip = await _context.Trips.FindAsync(id);
-            if (trip == null)
-            {
-                return NotFound();
-            }
+            if (trip == null) return NotFound();
             ViewData["RouteId"] = new SelectList(_context.Routes, "Id", "Name", trip.RouteId);
             ViewData["TouristId"] = new SelectList(_context.Tourists, "Id", "Email", trip.TouristId);
             return View(trip);
@@ -94,12 +82,10 @@ namespace GOTurystyka.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Date,Ended,Confirmed,RouteId,TouristId")] Trip trip)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Date,Ended,Confirmed,RouteId,TouristId")]
+            Trip trip)
         {
-            if (id != trip.Id)
-            {
-                return NotFound();
-            }
+            if (id != trip.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -111,16 +97,13 @@ namespace GOTurystyka.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!TripExists(trip.Id))
-                    {
                         return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["RouteId"] = new SelectList(_context.Routes, "Id", "Name", trip.RouteId);
             ViewData["TouristId"] = new SelectList(_context.Tourists, "Id", "Email", trip.TouristId);
             return View(trip);
@@ -129,25 +112,20 @@ namespace GOTurystyka.Controllers
         // GET: Trips/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var trip = await _context.Trips
                 .Include(t => t.Route)
                 .Include(t => t.Tourist)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (trip == null)
-            {
-                return NotFound();
-            }
+            if (trip == null) return NotFound();
 
             return View(trip);
         }
 
         // POST: Trips/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

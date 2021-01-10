@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 #nullable disable
 
 namespace GOTurystyka.Models
 {
-    public partial class Got3
+    public class Got3
     {
         public Got3()
         {

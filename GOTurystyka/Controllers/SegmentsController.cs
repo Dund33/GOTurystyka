@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using GOTurystyka.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using GOTurystyka.Models;
 
 namespace GOTurystyka.Controllers
 {
@@ -28,18 +26,12 @@ namespace GOTurystyka.Controllers
         // GET: Segments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var segment = await _context.Segments
                 .Include(s => s.Foreman)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (segment == null)
-            {
-                return NotFound();
-            }
+            if (segment == null) return NotFound();
 
             return View(segment);
         }
@@ -56,7 +48,9 @@ namespace GOTurystyka.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Points,Length,HasPoints,PointsDir1,PointsDir2,ForemanId,LicenseForId")] Segment segment)
+        public async Task<IActionResult> Create(
+            [Bind("Id,Points,Length,HasPoints,PointsDir1,PointsDir2,ForemanId,LicenseForId")]
+            Segment segment)
         {
             if (ModelState.IsValid)
             {
@@ -64,6 +58,7 @@ namespace GOTurystyka.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["ForemanId"] = new SelectList(_context.Foremen, "Id", "Email", segment.ForemanId);
             return View(segment);
         }
@@ -71,16 +66,10 @@ namespace GOTurystyka.Controllers
         // GET: Segments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var segment = await _context.Segments.FindAsync(id);
-            if (segment == null)
-            {
-                return NotFound();
-            }
+            if (segment == null) return NotFound();
             ViewData["ForemanId"] = new SelectList(_context.Foremen, "Id", "Email", segment.ForemanId);
             return View(segment);
         }
@@ -90,12 +79,11 @@ namespace GOTurystyka.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Points,Length,HasPoints,PointsDir1,PointsDir2,ForemanId,LicenseForId")] Segment segment)
+        public async Task<IActionResult> Edit(int id,
+            [Bind("Id,Points,Length,HasPoints,PointsDir1,PointsDir2,ForemanId,LicenseForId")]
+            Segment segment)
         {
-            if (id != segment.Id)
-            {
-                return NotFound();
-            }
+            if (id != segment.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -107,16 +95,13 @@ namespace GOTurystyka.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!SegmentExists(segment.Id))
-                    {
                         return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["ForemanId"] = new SelectList(_context.Foremen, "Id", "Email", segment.ForemanId);
             return View(segment);
         }
@@ -124,24 +109,19 @@ namespace GOTurystyka.Controllers
         // GET: Segments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var segment = await _context.Segments
                 .Include(s => s.Foreman)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (segment == null)
-            {
-                return NotFound();
-            }
+            if (segment == null) return NotFound();
 
             return View(segment);
         }
 
         // POST: Segments/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

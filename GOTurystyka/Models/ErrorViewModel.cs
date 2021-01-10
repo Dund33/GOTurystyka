@@ -1,5 +1,3 @@
-using System;
-
 namespace GOTurystyka.Models
 {
     public class ErrorViewModel

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using GOTurystyka.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using GOTurystyka.Models;
 
 namespace GOTurystyka.Controllers
 {
@@ -28,18 +26,12 @@ namespace GOTurystyka.Controllers
         // GET: Points/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var point = await _context.Points
                 .Include(p => p.Admin)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (point == null)
-            {
-                return NotFound();
-            }
+            if (point == null) return NotFound();
 
             return View(point);
         }
@@ -56,7 +48,8 @@ namespace GOTurystyka.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Longitude,Latitude,Height,AdminId")] Point point)
+        public async Task<IActionResult> Create([Bind("Id,Name,Longitude,Latitude,Height,AdminId")]
+            Point point)
         {
             if (ModelState.IsValid)
             {
@@ -64,6 +57,7 @@ namespace GOTurystyka.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["AdminId"] = new SelectList(_context.Admins, "Id", "Email", point.AdminId);
             return View(point);
         }
@@ -71,16 +65,10 @@ namespace GOTurystyka.Controllers
         // GET: Points/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var point = await _context.Points.FindAsync(id);
-            if (point == null)
-            {
-                return NotFound();
-            }
+            if (point == null) return NotFound();
             ViewData["AdminId"] = new SelectList(_context.Admins, "Id", "Email", point.AdminId);
             return View(point);
         }
@@ -90,12 +78,10 @@ namespace GOTurystyka.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Longitude,Latitude,Height,AdminId")] Point point)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Longitude,Latitude,Height,AdminId")]
+            Point point)
         {
-            if (id != point.Id)
-            {
-                return NotFound();
-            }
+            if (id != point.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -107,16 +93,13 @@ namespace GOTurystyka.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!PointExists(point.Id))
-                    {
                         return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["AdminId"] = new SelectList(_context.Admins, "Id", "Email", point.AdminId);
             return View(point);
         }
@@ -124,24 +107,19 @@ namespace GOTurystyka.Controllers
         // GET: Points/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var point = await _context.Points
                 .Include(p => p.Admin)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (point == null)
-            {
-                return NotFound();
-            }
+            if (point == null) return NotFound();
 
             return View(point);
         }
 
         // POST: Points/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
