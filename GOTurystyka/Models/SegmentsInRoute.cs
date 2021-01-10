@@ -1,8 +1,11 @@
-﻿#nullable disable
+﻿using System;
+using System.Collections.Generic;
+
+#nullable disable
 
 namespace GOTurystyka.Models
 {
-    public class SegmentsInRoute
+    public partial class SegmentsInRoute
     {
         public int RouteId { get; set; }
         public int SegmentId { get; set; }

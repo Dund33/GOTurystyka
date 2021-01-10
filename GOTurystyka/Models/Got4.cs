@@ -1,8 +1,11 @@
-﻿#nullable disable
+﻿using System;
+using System.Collections.Generic;
+
+#nullable disable
 
 namespace GOTurystyka.Models
 {
-    public class Got4
+    public partial class Got4
     {
         public int Id { get; set; }
         public string FullName { get; set; }

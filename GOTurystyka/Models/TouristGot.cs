@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 #nullable disable
 
 namespace GOTurystyka.Models
 {
-    public class TouristGot
+    public partial class TouristGot
     {
         public int Id { get; set; }
         public DateTime? AwardedOn { get; set; }

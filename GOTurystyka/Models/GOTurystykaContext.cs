@@ -1,11 +1,12 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
 namespace GOTurystyka.Models
 {
-    public class GOTurystykaContext : DbContext
+    public partial class GOTurystykaContext : DbContext
     {
         public GOTurystykaContext()
         {
@@ -35,15 +36,6 @@ namespace GOTurystyka.Models
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UsersInTrip> UsersInTrips { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https: //go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer(
-                    "Server=unclelukes.site;Database=GOTurystyka;user id=sa;password=SecureMSSQLPassword34!");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -51,7 +43,6 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<Admin>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.DateOfBirth).HasColumnType("date");
 
@@ -79,8 +70,6 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<Commission>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.DateOfBirth).HasColumnType("date");
 
                 entity.Property(e => e.Email)
@@ -100,8 +89,6 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<Foreman>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.DateOfBirth).HasColumnType("date");
 
                 entity.Property(e => e.Email)
@@ -133,8 +120,6 @@ namespace GOTurystyka.Models
             {
                 entity.ToTable("GOT3s");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.FullName)
                     .IsRequired()
                     .HasMaxLength(255);
@@ -149,8 +134,6 @@ namespace GOTurystyka.Models
             modelBuilder.Entity<Got4>(entity =>
             {
                 entity.ToTable("GOT4s");
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.FullName)
                     .IsRequired()
@@ -167,8 +150,6 @@ namespace GOTurystyka.Models
             {
                 entity.ToTable("GOTTiers");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.FullName)
                     .IsRequired()
                     .HasMaxLength(255);
@@ -176,7 +157,7 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<LicensesFor>(entity =>
             {
-                entity.HasKey(e => new {e.ForemanId, e.SegmentId});
+                entity.HasKey(e => new { e.ForemanId, e.SegmentId });
 
                 entity.ToTable("LicensesFor");
 
@@ -201,8 +182,6 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<Point>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(128);
@@ -216,7 +195,7 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<PointsInSegment>(entity =>
             {
-                entity.HasKey(e => new {e.SegmentId, e.PointId});
+                entity.HasKey(e => new { e.SegmentId, e.PointId });
 
                 entity.HasOne(d => d.Point)
                     .WithMany(p => p.PointsInSegments)
@@ -233,8 +212,6 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<Route>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.DateOfCreation).HasColumnType("date");
 
                 entity.Property(e => e.LastUpdate).HasColumnType("date");
@@ -252,8 +229,6 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<Segment>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.HasOne(d => d.Foreman)
                     .WithMany(p => p.Segments)
                     .HasForeignKey(d => d.ForemanId)
@@ -263,7 +238,7 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<SegmentsInRoute>(entity =>
             {
-                entity.HasKey(e => new {e.RouteId, e.SegmentId});
+                entity.HasKey(e => new { e.RouteId, e.SegmentId });
 
                 entity.HasOne(d => d.Route)
                     .WithMany(p => p.SegmentsInRoutes)
@@ -280,8 +255,6 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<TemporaryPoint>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.CreationDate).HasColumnType("date");
 
                 entity.Property(e => e.GccheckTime)
@@ -306,8 +279,6 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<Tourist>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.DateOfBirth).HasColumnType("date");
 
                 entity.Property(e => e.Email)
@@ -339,8 +310,6 @@ namespace GOTurystyka.Models
             {
                 entity.ToTable("TouristGOTs");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.AwardedOn).HasColumnType("date");
 
                 entity.Property(e => e.Gotid).HasColumnName("GOTId");
@@ -366,8 +335,6 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<Trip>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.Date).HasColumnType("datetime");
 
                 entity.Property(e => e.Name)
@@ -390,8 +357,6 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.DateOfBirth).HasColumnType("date");
 
                 entity.Property(e => e.Email)
@@ -413,7 +378,7 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<UsersInTrip>(entity =>
             {
-                entity.HasKey(e => new {e.UserId, e.TripId});
+                entity.HasKey(e => new { e.UserId, e.TripId });
 
                 entity.HasOne(d => d.Trip)
                     .WithMany(p => p.UsersInTrips)
@@ -431,9 +396,6 @@ namespace GOTurystyka.Models
             OnModelCreatingPartial(modelBuilder);
         }
 
-        private void OnModelCreatingPartial(ModelBuilder modelBuilder)
-        {
-            throw new NotImplementedException();
-        }
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

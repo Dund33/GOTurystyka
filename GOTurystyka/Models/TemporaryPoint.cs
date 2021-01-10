@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 #nullable disable
 
 namespace GOTurystyka.Models
 {
-    public class TemporaryPoint
+    public partial class TemporaryPoint
     {
         public int Id { get; set; }
         public string Name { get; set; }
