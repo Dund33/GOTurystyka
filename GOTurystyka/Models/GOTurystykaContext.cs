@@ -237,7 +237,7 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<SegmentsInRoute>(entity =>
             {
-                entity.HasKey(e => new { e.RouteId, e.SegmentId });
+                entity.HasKey(e => new { e.OrderingNumber, e.RouteId, e.SegmentId });
 
                 entity.HasOne(d => d.Route)
                     .WithMany(p => p.SegmentsInRoutes)

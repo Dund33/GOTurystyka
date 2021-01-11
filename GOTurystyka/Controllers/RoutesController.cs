@@ -36,12 +36,22 @@ namespace GOTurystyka.Controllers
             var route = await _context.Routes
                 .Include(r => r.Creator)
                 .FirstOrDefaultAsync(m => m.Id == id);
+            var points = await _context.SegmentsInRoutes
+                .Where(sir => sir.RouteId == id)
+                .Include(sir => sir.Segment)
+                .Include(sir => sir.Segment.PointsInSegments)
+                .SelectMany(sir => sir.Segment.PointsInSegments)
+                .Include(pis => pis.Point)
+                .Select(pis => pis.Point)
+                .ToListAsync();
+
+          
             if (route == null)
             {
                 return NotFound();
             }
 
-            return View(route);
+            return View((route, points));
         }
 
         // GET: Routes/Create
@@ -54,8 +64,13 @@ namespace GOTurystyka.Controllers
         // POST: Routes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Length,NumberOfPoints,AlreadyTravelled,DateOfCreation,LastUpdate,Approved,CreatorId")] Route route)
+        public async Task<IActionResult> Create([Bind("Id,Name,NumberOfPoints,CreatorId")] Route route)
         {
+            route.AlreadyTravelled = false;
+            route.Approved = false;
+            route.LastUpdate = DateTime.Now;
+            route.DateOfCreation = DateTime.Now;
+            TryValidateModel(route);
             if (ModelState.IsValid)
             {
                 _context.Add(route);

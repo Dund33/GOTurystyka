@@ -45,7 +45,7 @@ namespace GOTurystyka.Controllers
                 return NotFound();
             }
 
-            return View((segment, points));
+            return View((Segment: segment, Points: points));
         }
 
         // GET: Segments/Create

@@ -1,4 +1,4 @@
-﻿@model GOTurystyka.Models.Route
+﻿@model (GOTurystyka.Models.Route Route, List<Point> Points)
 
 @{
     ViewData["Title"] = "Details";
@@ -10,57 +10,68 @@
     <h4>Route</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Route.Name)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Route.Name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Length)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Route.Length)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Length)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Route.Length)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NumberOfPoints)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Route.NumberOfPoints)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NumberOfPoints)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Route.NumberOfPoints)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AlreadyTravelled)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Route.AlreadyTravelled)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AlreadyTravelled)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Route.AlreadyTravelled)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateOfCreation)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Route.DateOfCreation)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateOfCreation)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Route.DateOfCreation)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastUpdate)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Route.LastUpdate)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastUpdate)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Route.LastUpdate)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Approved)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Route.Approved)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Approved)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Route.Approved)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Creator)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Route.Creator)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Creator.Email)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Route.Creator.Login)
         </dd>
+        <dt class="col-sm-2">
+            Points
+        </dt>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">Points in the segment</dt>
+        |
+        @foreach (var point in Model.Points)
+        {
+            <dd>@point.Name|</dd>
+        }
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Route.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

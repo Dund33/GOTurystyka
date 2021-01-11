@@ -1,4 +1,4 @@
-﻿@model (Segment, List<Point>)
+﻿@model (Segment Segment, List<Point> Points)
 
 @{
     ViewData["Title"] = "Details";
@@ -11,52 +11,52 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Item1.Points)
+            @Html.DisplayNameFor(model => model.Segment.Points)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Item1.Points)
+            @Html.DisplayFor(model => model.Segment.Points)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Item1.Length)
+            @Html.DisplayNameFor(model => model.Segment.Length)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Item1.Length)
+            @Html.DisplayFor(model => model.Segment.Length)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Item1.HasPoints)
+            @Html.DisplayNameFor(model => model.Segment.HasPoints)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Item1.HasPoints)
+            @Html.DisplayFor(model => model.Segment.HasPoints)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Item1.PointsDir1)
+            @Html.DisplayNameFor(model => model.Segment.PointsDir1)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Item1.PointsDir1)
+            @Html.DisplayFor(model => model.Segment.PointsDir1)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Item1.PointsDir2)
+            @Html.DisplayNameFor(model => model.Segment.PointsDir2)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Item1.PointsDir2)
+            @Html.DisplayFor(model => model.Segment.PointsDir2)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Item1.LicenseForId)
+            @Html.DisplayNameFor(model => model.Segment.LicenseForId)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Item1.LicenseForId)
+            @Html.DisplayFor(model => model.Segment.LicenseForId)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Item1.Foreman)
+            @Html.DisplayNameFor(model => model.Segment.Foreman)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Item1.Foreman.Email)
+            @Html.DisplayFor(model => model.Segment.Foreman.Email)
         </dd>
     </dl>
 
     <dl class="row">
         <dt class="col-sm-2">Points in the segment</dt>
-        |@foreach (var point in Model.Item2)
+        |@foreach (var point in Model.Points)
         {
             <dd>@point.Name|</dd>
         }
@@ -64,6 +64,6 @@
     
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Item1.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Segment.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

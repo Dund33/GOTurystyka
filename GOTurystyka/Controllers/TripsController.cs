@@ -12,6 +12,8 @@ namespace GOTurystyka.Controllers
     public class TripsController : Controller
     {
         private readonly GOTurystykaContext _context;
+        //TODO: remove hardcoded UserId
+        private const int UserId = 1;
 
         public TripsController(GOTurystykaContext context)
         {
@@ -21,8 +23,36 @@ namespace GOTurystyka.Controllers
         // GET: Trips
         public async Task<IActionResult> Index()
         {
-            var gOTurystykaContext = _context.Trips.Include(t => t.Route).Include(t => t.Tourist);
+            var gOTurystykaContext = _context.Trips
+                .Include(t => t.Route)
+                .Include(t => t.Tourist);
             return View(await gOTurystykaContext.ToListAsync());
+        }
+
+        //GET: Trips/Join/5
+        public async Task<IActionResult> Join(int? id)
+        {
+            if (id == null)
+                return NotFound();
+            
+            var alreadyJoined = await _context.UsersInTrips
+                .Where(uit => uit.TripId == id)
+                .Where(uit => uit.UserId == UserId)
+                .AnyAsync();
+
+            if (alreadyJoined)
+                return RedirectToAction("Index");
+
+
+            await _context.UsersInTrips.AddAsync(new UsersInTrip
+            {
+                TripId = id.Value,
+                UserId = UserId
+            });
+
+            await _context.SaveChangesAsync();
+
+            return View("Joined");
         }
 
         // GET: Trips/Details/5
