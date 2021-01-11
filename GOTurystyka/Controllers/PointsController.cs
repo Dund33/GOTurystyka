@@ -1,29 +1,31 @@
-﻿using GOTurystyka.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading.Tasks;
+using GOTurystyka.Models;
 
 namespace GOTurystyka.Controllers
 {
-    public class SegmentsController : Controller
+    public class PointsController : Controller
     {
         private readonly GOTurystykaContext _context;
 
-        public SegmentsController(GOTurystykaContext context)
+        public PointsController(GOTurystykaContext context)
         {
             _context = context;
         }
 
-        // GET: Segments
+        // GET: Points
         public async Task<IActionResult> Index()
         {
-            var gOTurystykaContext = _context.Segments.Include(s => s.Foreman);
+            var gOTurystykaContext = _context.Points.Include(p => p.Admin);
             return View(await gOTurystykaContext.ToListAsync());
         }
 
-        // GET: Segments/Details/5
+        // GET: Points/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -31,46 +33,40 @@ namespace GOTurystyka.Controllers
                 return NotFound();
             }
 
-            var segment = await _context.Segments
-                .Include(s => s.Foreman)
+            var point = await _context.Points
+                .Include(p => p.Admin)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            var points = await _context.PointsInSegments
-                .Where(p => p.Segment == segment)
-                .Include(p => p.Point)
-                .Select(p => p.Point)
-                .ToListAsync();
-
-            if (segment == null)
+            if (point == null)
             {
                 return NotFound();
             }
 
-            return View((segment, points));
+            return View(point);
         }
 
-        // GET: Segments/Create
+        // GET: Points/Create
         public IActionResult Create()
         {
-            ViewData["ForemanId"] = new SelectList(_context.Foremen, "Id", "Email");
+            ViewData["AdminId"] = new SelectList(_context.Admins, "Id", "Email");
             return View();
         }
 
-        // POST: Segments/Create
+        // POST: Points/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Points,Length,HasPoints,PointsDir1,PointsDir2,ForemanId,LicenseForId")] Segment segment)
+        public async Task<IActionResult> Create([Bind("Id,Name,Longitude,Latitude,Height,AdminId")] Point point)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(segment);
+                _context.Add(point);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ForemanId"] = new SelectList(_context.Foremen, "Id", "Email", segment.ForemanId);
-            return View(segment);
+            ViewData["AdminId"] = new SelectList(_context.Admins, "Id", "Email", point.AdminId);
+            return View(point);
         }
 
-        // GET: Segments/Edit/5
+        // GET: Points/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,21 +74,21 @@ namespace GOTurystyka.Controllers
                 return NotFound();
             }
 
-            var segment = await _context.Segments.FindAsync(id);
-            if (segment == null)
+            var point = await _context.Points.FindAsync(id);
+            if (point == null)
             {
                 return NotFound();
             }
-            ViewData["ForemanId"] = new SelectList(_context.Foremen, "Id", "Email", segment.ForemanId);
-            return View(segment);
+            ViewData["AdminId"] = new SelectList(_context.Admins, "Id", "Email", point.AdminId);
+            return View(point);
         }
 
-        // POST: Segments/Edit/5
+        // POST: Points/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Points,Length,HasPoints,PointsDir1,PointsDir2,ForemanId,LicenseForId")] Segment segment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Longitude,Latitude,Height,AdminId")] Point point)
         {
-            if (id != segment.Id)
+            if (id != point.Id)
             {
                 return NotFound();
             }
@@ -101,12 +97,12 @@ namespace GOTurystyka.Controllers
             {
                 try
                 {
-                    _context.Update(segment);
+                    _context.Update(point);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SegmentExists(segment.Id))
+                    if (!PointExists(point.Id))
                     {
                         return NotFound();
                     }
@@ -117,11 +113,11 @@ namespace GOTurystyka.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ForemanId"] = new SelectList(_context.Foremen, "Id", "Email", segment.ForemanId);
-            return View(segment);
+            ViewData["AdminId"] = new SelectList(_context.Admins, "Id", "Email", point.AdminId);
+            return View(point);
         }
 
-        // GET: Segments/Delete/5
+        // GET: Points/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -129,31 +125,31 @@ namespace GOTurystyka.Controllers
                 return NotFound();
             }
 
-            var segment = await _context.Segments
-                .Include(s => s.Foreman)
+            var point = await _context.Points
+                .Include(p => p.Admin)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (segment == null)
+            if (point == null)
             {
                 return NotFound();
             }
 
-            return View(segment);
+            return View(point);
         }
 
-        // POST: Segments/Delete/5
+        // POST: Points/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var segment = await _context.Segments.FindAsync(id);
-            _context.Segments.Remove(segment);
+            var point = await _context.Points.FindAsync(id);
+            _context.Points.Remove(point);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SegmentExists(int id)
+        private bool PointExists(int id)
         {
-            return _context.Segments.Any(e => e.Id == id);
+            return _context.Points.Any(e => e.Id == id);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using GOTurystyka.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.IO;
+using Microsoft.AspNetCore.Identity;
 
 namespace GOTurystyka
 {
@@ -24,6 +26,14 @@ namespace GOTurystyka
             var server = File.ReadAllText("Properties/SQLServer.txt");
             services.AddControllersWithViews();
             services.AddDbContext<GOTurystykaContext>(options => options.UseSqlServer(server));
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +56,8 @@ namespace GOTurystyka
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

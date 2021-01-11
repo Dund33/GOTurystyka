@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
 namespace GOTurystyka.Models
 {
-    public partial class GOTurystykaContext : DbContext
+    public partial class GOTurystykaContext: DbContext
     {
         public GOTurystykaContext()
         {
