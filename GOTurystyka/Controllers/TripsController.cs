@@ -23,10 +23,17 @@ namespace GOTurystyka.Controllers
         // GET: Trips
         public async Task<IActionResult> Index()
         {
-            var gOTurystykaContext = _context.Trips
+            var decoratedTrips = _context.Trips
                 .Include(t => t.Route)
-                .Include(t => t.Tourist);
-            return View(await gOTurystykaContext.ToListAsync());
+                .Include(t => t.Tourist)
+                .Select(trip => new TripDecorator
+                {
+                    Trip = trip,
+                    Joined = _context.UsersInTrips
+                        .Any(uit => uit.UserId == UserId)
+                });
+
+            return View(await decoratedTrips.ToListAsync());
         }
 
         //GET: Trips/Join/5
@@ -53,6 +60,31 @@ namespace GOTurystyka.Controllers
             await _context.SaveChangesAsync();
 
             return View("Joined");
+        }
+
+        public async Task<IActionResult> Leave(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var alreadyLeft = !await _context.UsersInTrips
+                .Where(uit => uit.TripId == id)
+                .Where(uit => uit.UserId == UserId)
+                .AnyAsync();
+
+            if (alreadyLeft)
+                return RedirectToAction("Index");
+
+
+            _context.UsersInTrips.Remove(new UsersInTrip
+            {
+                TripId = id.Value,
+                UserId = UserId
+            });
+
+            await _context.SaveChangesAsync();
+
+            return View("Left");
         }
 
         // GET: Trips/Details/5

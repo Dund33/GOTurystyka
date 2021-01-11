@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GOTurystyka.Models.Trip>
+﻿@model IEnumerable<TripDecorator>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,22 +13,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Trip.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Date)
+                @Html.DisplayNameFor(model => model.Trip.Date)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Ended)
+                @Html.DisplayNameFor(model => model.Trip.Ended)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Confirmed)
+                @Html.DisplayNameFor(model => model.Trip.Confirmed)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Route)
+                @Html.DisplayNameFor(model => model.Trip.Route)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Tourist)
+                @Html.DisplayNameFor(model => model.Trip.Tourist)
             </th>
             <th></th>
         </tr>
@@ -37,28 +37,35 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.Trip.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Date)
+                @Html.DisplayFor(modelItem => item.Trip.Date)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Ended)
+                @Html.DisplayFor(modelItem => item.Trip.Ended)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Confirmed)
+                @Html.DisplayFor(modelItem => item.Trip.Confirmed)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Route.Name)
+                @Html.DisplayFor(modelItem => item.Trip.Route.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Tourist.Email)
+                @Html.DisplayFor(modelItem => item.Trip.Tourist.Email)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
-                <a asp-action="Join" asp-route-id="@item.Id">Join</a>
+                <a asp-action="Edit" asp-route-id="@item.Trip.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Trip.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Trip.Id">Delete</a> |
+                @if (@item.Joined)
+                {
+                    <a asp-action="Leave" asp-route-id="@item.Trip.Id">Leave</a>
+                }
+                else
+                {
+                    <a asp-action="Join" asp-route-id="@item.Trip.Id">Join</a>
+                }
             </td>
         </tr>
 }
