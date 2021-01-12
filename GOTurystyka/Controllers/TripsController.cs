@@ -41,23 +41,12 @@ namespace GOTurystyka.Controllers
         {
             if (id == null)
                 return NotFound();
-            
-            var alreadyJoined = await _context.UsersInTrips
-                .Where(uit => uit.TripId == id)
-                .Where(uit => uit.UserId == UserId)
-                .AnyAsync();
+            var alreadyJoined = await AlreadyJoined(id, UserId);
 
             if (alreadyJoined)
-                return RedirectToAction("Index");
+                return View("Index");
 
-
-            await _context.UsersInTrips.AddAsync(new UsersInTrip
-            {
-                TripId = id.Value,
-                UserId = UserId
-            });
-
-            await _context.SaveChangesAsync();
+            await JoinTrip(id.Value, UserId);
 
             return View("Joined");
         }
@@ -124,6 +113,7 @@ namespace GOTurystyka.Controllers
             {
                 _context.Add(trip);
                 await _context.SaveChangesAsync();
+                await JoinTrip(trip.Id, UserId);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["RouteId"] = new SelectList(_context.Routes, "Id", "Name", trip.RouteId);
@@ -218,6 +208,25 @@ namespace GOTurystyka.Controllers
         private bool TripExists(int id)
         {
             return _context.Trips.Any(e => e.Id == id);
+        }
+
+        private async Task<bool> AlreadyJoined(int? id, int touristId)
+        {
+            var alreadyJoined = await _context.UsersInTrips
+                .Where(uit => uit.TripId == id)
+                .Where(uit => uit.UserId == UserId)
+                .AnyAsync();
+            return alreadyJoined;
+        }
+
+        private async Task JoinTrip(int id, int userId)
+        {
+            await _context.UsersInTrips.AddAsync(new UsersInTrip
+            {
+                TripId = id,
+                UserId = userId
+            });
+            await _context.SaveChangesAsync();
         }
     }
 }

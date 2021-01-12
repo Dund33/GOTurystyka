@@ -24,7 +24,7 @@ namespace GOTurystyka
         {
             var server = File.ReadAllText("Properties/SQLServer.txt");
             services.AddControllersWithViews();
-            //services.AddDbContext<GOTurystykaContext>(options => options.UseSqlServer(server));
+            services.AddDbContext<GOTurystykaContext>(options => options.UseSqlServer(server));
             services.AddDistributedMemoryCache();
 
             services.AddSession(options =>
