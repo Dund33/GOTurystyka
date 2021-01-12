@@ -30,6 +30,7 @@ namespace GOTurystyka.Controllers
                 {
                     Trip = trip,
                     Joined = _context.UsersInTrips
+                        .Where(uit => uit.TripId == trip.Id)
                         .Any(uit => uit.UserId == UserId)
                 });
 
