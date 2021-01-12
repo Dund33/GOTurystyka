@@ -4,7 +4,7 @@
 
 namespace GOTurystyka.Models
 {
-    public partial class LicensesFor
+    public class LicensesFor
     {
         public string AreaName { get; set; }
         public DateTime DateOfLicensing { get; set; }

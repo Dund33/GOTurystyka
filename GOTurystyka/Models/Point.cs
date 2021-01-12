@@ -4,7 +4,7 @@
 
 namespace GOTurystyka.Models
 {
-    public partial class Point
+    public class Point
     {
         public Point()
         {

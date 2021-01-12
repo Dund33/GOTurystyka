@@ -1,13 +1,12 @@
-using System;
-using GOTurystyka.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.IO;
-using Microsoft.AspNetCore.Identity;
+using GOTurystyka.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace GOTurystyka
 {
@@ -25,7 +24,7 @@ namespace GOTurystyka
         {
             var server = File.ReadAllText("Properties/SQLServer.txt");
             services.AddControllersWithViews();
-            services.AddDbContext<GOTurystykaContext>(options => options.UseSqlServer(server));
+            //services.AddDbContext<GOTurystykaContext>(options => options.UseSqlServer(server));
             services.AddDistributedMemoryCache();
 
             services.AddSession(options =>

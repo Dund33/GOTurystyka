@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
 namespace GOTurystyka.Models
 {
-    public partial class GOTurystykaContext: DbContext
+    public class GOTurystykaContext : DbContext
     {
         public GOTurystykaContext()
         {
@@ -35,14 +34,12 @@ namespace GOTurystyka.Models
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UsersInTrip> UsersInTrips { get; set; }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
             modelBuilder.Entity<Admin>(entity =>
             {
-
                 entity.Property(e => e.DateOfBirth).HasColumnType("date");
 
                 entity.Property(e => e.Email)
@@ -156,7 +153,7 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<LicensesFor>(entity =>
             {
-                entity.HasKey(e => new { e.ForemanId, e.SegmentId });
+                entity.HasKey(e => new {e.ForemanId, e.SegmentId});
 
                 entity.ToTable("LicensesFor");
 
@@ -194,7 +191,7 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<PointsInSegment>(entity =>
             {
-                entity.HasKey(e => new { e.SegmentId, e.PointId });
+                entity.HasKey(e => new {e.SegmentId, e.PointId, e.OrderingNumber});
 
                 entity.HasOne(d => d.Point)
                     .WithMany(p => p.PointsInSegments)
@@ -237,7 +234,7 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<SegmentsInRoute>(entity =>
             {
-                entity.HasKey(e => new { e.OrderingNumber, e.RouteId, e.SegmentId });
+                entity.HasKey(e => new {e.OrderingNumber, e.RouteId, e.SegmentId});
 
                 entity.HasOne(d => d.Route)
                     .WithMany(p => p.SegmentsInRoutes)
@@ -311,7 +308,9 @@ namespace GOTurystyka.Models
 
                 entity.Property(e => e.AwardedOn).HasColumnType("date");
 
-                entity.Property(e => e.Gotid).HasColumnName("GOTId");
+                entity.Property(e => e.Got3id).HasColumnName("GOT3Id");
+
+                entity.Property(e => e.Got4id).HasColumnName("GOT4Id");
 
                 entity.HasOne(d => d.Commision)
                     .WithMany(p => p.TouristGots)
@@ -319,11 +318,15 @@ namespace GOTurystyka.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_TouristGOTs_Commissions");
 
-                entity.HasOne(d => d.Got)
+                entity.HasOne(d => d.Got3)
                     .WithMany(p => p.TouristGots)
-                    .HasForeignKey(d => d.Gotid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasForeignKey(d => d.Got3id)
                     .HasConstraintName("FK_TouristGOTs_GOT3s");
+
+                entity.HasOne(d => d.Got4)
+                    .WithMany(p => p.TouristGots)
+                    .HasForeignKey(d => d.Got4id)
+                    .HasConstraintName("FK_TouristGOTs_GOT4s");
 
                 entity.HasOne(d => d.Tourist)
                     .WithMany(p => p.TouristGots)
@@ -377,7 +380,7 @@ namespace GOTurystyka.Models
 
             modelBuilder.Entity<UsersInTrip>(entity =>
             {
-                entity.HasKey(e => new { e.UserId, e.TripId });
+                entity.HasKey(e => new {e.UserId, e.TripId});
 
                 entity.HasOne(d => d.Trip)
                     .WithMany(p => p.UsersInTrips)
@@ -391,10 +394,6 @@ namespace GOTurystyka.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_UsersInTrips_Users");
             });
-
-            OnModelCreatingPartial(modelBuilder);
         }
-
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

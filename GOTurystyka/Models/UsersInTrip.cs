@@ -2,7 +2,7 @@
 
 namespace GOTurystyka.Models
 {
-    public partial class UsersInTrip
+    public class UsersInTrip
     {
         public int UserId { get; set; }
         public int TripId { get; set; }

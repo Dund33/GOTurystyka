@@ -4,7 +4,7 @@
 
 namespace GOTurystyka.Models
 {
-    public partial class Gottier
+    public class Gottier
     {
         public Gottier()
         {

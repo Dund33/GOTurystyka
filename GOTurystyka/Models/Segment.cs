@@ -4,7 +4,7 @@
 
 namespace GOTurystyka.Models
 {
-    public partial class Segment
+    public class Segment
     {
         public Segment()
         {

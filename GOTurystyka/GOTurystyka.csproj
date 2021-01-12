@@ -5,6 +5,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Contexts\**" />
+    <Compile Remove="Controllers\**" />
+    <Compile Remove="Views\**" />
+    <Content Remove="Contexts\**" />
+    <Content Remove="Controllers\**" />
+    <Content Remove="Views\**" />
+    <EmbeddedResource Remove="Contexts\**" />
+    <EmbeddedResource Remove="Controllers\**" />
+    <EmbeddedResource Remove="Views\**" />
+    <None Remove="Contexts\**" />
+    <None Remove="Controllers\**" />
+    <None Remove="Views\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.1">
@@ -19,10 +34,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration" Version="5.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Contexts\" />
   </ItemGroup>
 
 </Project>
