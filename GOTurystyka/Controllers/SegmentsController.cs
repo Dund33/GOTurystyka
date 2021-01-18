@@ -11,6 +11,9 @@ namespace GOTurystyka.Controllers
     {
         private readonly GOTurystykaContext _context;
 
+        //Todo: remove hardcoded foreman Id
+        private const int ForemanId = 1;
+
         public SegmentsController(GOTurystykaContext context)
         {
             _context = context;
@@ -21,6 +24,27 @@ namespace GOTurystyka.Controllers
         {
             var gOTurystykaContext = _context.Segments.Include(s => s.Foreman);
             return View(await gOTurystykaContext.ToListAsync());
+        }
+
+        // GET: Accept 
+        public async Task<IActionResult> Approve(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var segment = await _context.Segments
+                .Where(s => s.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (segment.Approved == true)
+            {
+                return Ok("Segment is already approved!");
+            }
+
+            segment.Approved = true;
+            return View("Index");
         }
 
         // GET: Segments/Details/5

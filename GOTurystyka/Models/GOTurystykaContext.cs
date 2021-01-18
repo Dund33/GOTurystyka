@@ -230,6 +230,12 @@ namespace GOTurystyka.Models
                     .HasForeignKey(d => d.ForemanId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Segments_Foremen");
+
+                entity.HasOne(d => d.Creator)
+                    .WithMany(p => p.Segments)
+                    .HasForeignKey(d => d.CreatorId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Segments_Tourists");
             });
 
             modelBuilder.Entity<SegmentsInRoute>(entity =>

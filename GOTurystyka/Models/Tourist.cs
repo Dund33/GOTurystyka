@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.AccessControl;
 
 #nullable disable
 
@@ -27,6 +28,7 @@ namespace GOTurystyka.Models
         public int Points { get; set; }
 
         public virtual ICollection<Route> Routes { get; set; }
+        public virtual ICollection<Segment> Segments { get; set; }
         public virtual ICollection<TemporaryPoint> TemporaryPoints { get; set; }
         public virtual ICollection<TouristGot> TouristGots { get; set; }
         public virtual ICollection<Trip> Trips { get; set; }

@@ -19,10 +19,13 @@ namespace GOTurystyka.Models
         public bool HasPoints { get; set; }
         public int PointsDir1 { get; set; }
         public int PointsDir2 { get; set; }
-        public int ForemanId { get; set; }
+        public int? ForemanId { get; set; }
         public int? LicenseForId { get; set; }
+        public bool Approved { get; set; }
+        public int CreatorId { get; set; }
 
         public virtual Foreman Foreman { get; set; }
+        public virtual Tourist Creator { get; set; }
         public virtual ICollection<LicensesFor> LicensesFors { get; set; }
         public virtual ICollection<PointsInSegment> PointsInSegments { get; set; }
         public virtual ICollection<SegmentsInRoute> SegmentsInRoutes { get; set; }

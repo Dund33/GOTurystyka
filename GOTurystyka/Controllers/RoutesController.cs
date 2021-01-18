@@ -24,6 +24,57 @@ namespace GOTurystyka.Controllers
             var gOTurystykaContext = _context.Routes.Include(r => r.Creator);
             return View(await gOTurystykaContext.ToListAsync());
         }
+        // GET: FinishedRoutes
+        public async Task<IActionResult> FinishedRoutes()
+        {
+
+            var route = await _context.Routes
+                .Where(r => r.AlreadyTravelled == true)
+                .ToListAsync();
+
+            return View("Index", route);
+        }
+        // GET: Pass
+        public async Task<IActionResult> Pass(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var route = await _context.Routes.
+                Where(r => r.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (!route.AlreadyTravelled)
+            {
+                return Ok("This route has to be finished!");
+            }
+
+            route.AlreadyTravelled = true;
+            return RedirectToAction("Index");
+        }
+
+        // GET: Approve
+        public async Task<IActionResult> Approve(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var route = await _context.Routes.
+                Where(r => r.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (route.Approved == true)
+            {
+                return Ok("Route is already approved!");
+            }
+            route.Approved = true;
+            return View("Index");
+
+        }
 
         // GET: Routes/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -36,6 +87,7 @@ namespace GOTurystyka.Controllers
             var route = await _context.Routes
                 .Include(r => r.Creator)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             var points = await _context.SegmentsInRoutes
                 .Where(sir => sir.RouteId == id)
                 .Include(sir => sir.Segment)
