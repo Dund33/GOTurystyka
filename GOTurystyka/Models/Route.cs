@@ -22,6 +22,7 @@ namespace GOTurystyka.Models
         public DateTime LastUpdate { get; set; }
         public bool Approved { get; set; }
         public int CreatorId { get; set; }
+        public bool WaitingForApproval { get; set; }
 
         public virtual Tourist Creator { get; set; }
         public virtual ICollection<SegmentsInRoute> SegmentsInRoutes { get; set; }

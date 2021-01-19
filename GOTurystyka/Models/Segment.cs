@@ -23,6 +23,8 @@ namespace GOTurystyka.Models
         public int? LicenseForId { get; set; }
         public bool Approved { get; set; }
         public int CreatorId { get; set; }
+        public bool AlreadyTravelled { get; set; }
+        public bool WaitingForApproval { get; set; }
 
         public virtual Foreman Foreman { get; set; }
         public virtual Tourist Creator { get; set; }

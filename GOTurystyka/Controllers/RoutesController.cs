@@ -22,6 +22,7 @@ namespace GOTurystyka.Controllers
         public async Task<IActionResult> Index()
         {
             var gOTurystykaContext = _context.Routes.Include(r => r.Creator);
+            ViewBag.CallingMethod = "Index";
             return View(await gOTurystykaContext.ToListAsync());
         }
         // GET: FinishedRoutes
@@ -29,13 +30,13 @@ namespace GOTurystyka.Controllers
         {
 
             var route = await _context.Routes
-                .Where(r => r.AlreadyTravelled == true)
+                .Where(r => r.WaitingForApproval)
                 .ToListAsync();
-
+            ViewBag.CallingMethod = "FinishedRoutes";
             return View("Index", route);
         }
-        // GET: Pass
-        public async Task<IActionResult> Pass(int? id)
+        // GET: Finish
+        public async Task<IActionResult> Finish(int? id)
         {
             if (id == null)
             {
@@ -46,12 +47,9 @@ namespace GOTurystyka.Controllers
                 Where(r => r.Id == id)
                 .FirstOrDefaultAsync();
 
-            if (!route.AlreadyTravelled)
-            {
-                return Ok("This route has to be finished!");
-            }
-
             route.AlreadyTravelled = true;
+            route.WaitingForApproval = true;
+            await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
@@ -72,7 +70,8 @@ namespace GOTurystyka.Controllers
                 return Ok("Route is already approved!");
             }
             route.Approved = true;
-            return View("Index");
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
 
         }
 

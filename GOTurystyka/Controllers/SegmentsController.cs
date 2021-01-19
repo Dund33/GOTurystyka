@@ -26,7 +26,35 @@ namespace GOTurystyka.Controllers
             return View(await gOTurystykaContext.ToListAsync());
         }
 
-        // GET: Accept 
+        // GET: FinishedSegments
+        public async Task<IActionResult> FinishedSegments()
+        {
+
+            var segment = await _context.Routes
+                .Where(r => r.WaitingForApproval)
+                .ToListAsync();
+            ViewBag.CallingMethod = "FinishedRoutes";
+            return View("Index", segment);
+        }
+        // GET: Finish
+        public async Task<IActionResult> Finish(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var segment = await _context.Routes.
+                Where(r => r.Id == id)
+                .FirstOrDefaultAsync();
+
+            segment.AlreadyTravelled = true;
+            segment.WaitingForApproval = true;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        // GET: Approve 
         public async Task<IActionResult> Approve(int? id)
         {
             if (id == null)
@@ -82,7 +110,7 @@ namespace GOTurystyka.Controllers
         // POST: Segments/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Points,Length,HasPoints,PointsDir1,PointsDir2,ForemanId,LicenseForId")] Segment segment)
+        public async Task<IActionResult> Create([Bind("Id,Points,Length,HasPoints,PointsDir1,PointsDir2,ForemanId,LicenseForId,CreatorId")] Segment segment)
         {
             if (ModelState.IsValid)
             {
@@ -108,13 +136,14 @@ namespace GOTurystyka.Controllers
                 return NotFound();
             }
             ViewData["ForemanId"] = new SelectList(_context.Foremen, "Id", "Email", segment.ForemanId);
+            ViewData["CreatorId"] = new SelectList(_context.Tourists, "Id", "LastName", segment.CreatorId);
             return View(segment);
         }
 
         // POST: Segments/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Points,Length,HasPoints,PointsDir1,PointsDir2,ForemanId,LicenseForId")] Segment segment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Points,Length,HasPoints,PointsDir1,PointsDir2,ForemanId,LicenseForId,CreatorId,AlreadyTravelled")] Segment segment)
         {
             if (id != segment.Id)
             {
@@ -142,6 +171,7 @@ namespace GOTurystyka.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ForemanId"] = new SelectList(_context.Foremen, "Id", "Email", segment.ForemanId);
+            ViewData["CreatorId"] = new SelectList(_context.Tourists, "Id", "LastName", segment.CreatorId);
             return View(segment);
         }
 
