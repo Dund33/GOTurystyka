@@ -1,4 +1,5 @@
 ﻿using GOTurystyka.Models;
+using GOTurystyka.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,19 +11,22 @@ namespace GOTurystyka.Controllers
     public class SegmentsController : Controller
     {
         private readonly GOTurystykaContext _context;
+        private readonly IMessageService _messageService;
 
         //Todo: remove hardcoded foreman Id
         private const int ForemanId = 1;
 
-        public SegmentsController(GOTurystykaContext context)
+        public SegmentsController(GOTurystykaContext context, IMessageService messageService)
         {
             _context = context;
+            _messageService = messageService;
         }
 
         // GET: Segments
         public async Task<IActionResult> Index()
         {
             var gOTurystykaContext = _context.Segments.Include(s => s.Foreman);
+            ViewBag.CallingMethod = "Index";
             return View(await gOTurystykaContext.ToListAsync());
         }
 
@@ -30,10 +34,10 @@ namespace GOTurystyka.Controllers
         public async Task<IActionResult> FinishedSegments()
         {
 
-            var segment = await _context.Routes
+            var segment = await _context.Segments
                 .Where(r => r.WaitingForApproval)
                 .ToListAsync();
-            ViewBag.CallingMethod = "FinishedRoutes";
+            ViewBag.CallingMethod = "FinishedSegments";
             return View("Index", segment);
         }
         // GET: Finish
@@ -44,7 +48,7 @@ namespace GOTurystyka.Controllers
                 return NotFound();
             }
 
-            var segment = await _context.Routes.
+            var segment = await _context.Segments.
                 Where(r => r.Id == id)
                 .FirstOrDefaultAsync();
 
@@ -72,7 +76,49 @@ namespace GOTurystyka.Controllers
             }
 
             segment.Approved = true;
-            return View("Index");
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Decline(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var segment = await _context.Segments
+                .Where(s => s.Id == id)
+                .FirstOrDefaultAsync();
+
+            segment.Approved = false;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("ProvideFeedback");
+        }
+
+        // POST: ProvideFeedback
+        [HttpPost]
+        public async Task<IActionResult> ProvideFeedback()
+        {
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //var authorId = await _context.Segments
+            //    .Where(s => s.Id == id)
+            //    .Select(s => s.CreatorId)
+            //    .FirstOrDefaultAsync();
+
+            //_messageService.SendMessage(authorId, message);
+            return RedirectToAction("Index");
+        }
+
+        // POST: ProvideFeedback
+        [HttpGet]
+        public async Task<IActionResult> ProvideFeedback(int? id)
+        {
+            return View(new { id = id });
         }
 
         // GET: Segments/Details/5
