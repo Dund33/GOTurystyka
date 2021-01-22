@@ -7,6 +7,7 @@ using System;
 using System.IO;
 using GOTurystyka.Models;
 using Microsoft.EntityFrameworkCore;
+using GOTurystyka.Services;
 
 namespace GOTurystyka
 {
@@ -26,6 +27,7 @@ namespace GOTurystyka
             services.AddControllersWithViews();
             services.AddDbContext<GOTurystykaContext>(options => options.UseSqlServer(server));
             services.AddDistributedMemoryCache();
+            services.AddSingleton<IMessageService, MessageSender>();
 
             services.AddSession(options =>
             {
