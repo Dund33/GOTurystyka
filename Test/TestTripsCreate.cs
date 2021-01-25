@@ -49,27 +49,40 @@ namespace Test
         public void TestTripCreatedWhenCalledCreate()
         {
             //Arrange
+            
             var systemUnderTest = new TripsController(_context);
+
+            var oldTourist = _context.Tourists.AsNoTracking().First();
+            var route = _context.Routes.First();
+
+            var tourist = oldTourist;
+            tourist.Id = 0;
+
             var trip = new Trip()
             {
                 Confirmed = false,
                 Date = DateTime.Now,
                 Ended = false,
                 Name = TripName,
-                RouteId = 1,
-                TouristId = 1
+                Tourist = tourist,
+                TouristId = tourist.Id,
+                Route = route
             };
             
             //Act
-            systemUnderTest.Create(trip);
+            var _= systemUnderTest.Create(trip).Result;
             _context.SaveChanges();
-            var resTrip = _context.Trips.SingleOrDefault(trip => trip.Name == TripName);
+            var resTrip = _context.Trips.Find(trip.Id);
             
             //Assert
             resTrip.Should().NotBeNull();
             
             //Cleanup
+            var uit = _context.UsersInTrips
+                .FirstOrDefault(uit => uit.UserId == 1 && uit.TripId == resTrip.Id);
+            _context.Remove(uit);
             _context.Remove(trip);
+            _context.Remove(tourist);
             _context.SaveChanges();
         }
     }
