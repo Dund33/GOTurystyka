@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.IO;
-using System.Linq;
 using FluentAssertions;
 using GOTurystyka.Controllers;
 using GOTurystyka.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
 using NUnit.Framework;
 
 namespace Test
 {
-    public class Tests
+    public class TestTouristDetails
     {
-
         private const string MemoryConnString = "Database=:memory:";
+
+
+        private GOTurystykaContext _context;
+
         private static IServiceProvider CreateServices()
         {
             var server = File.ReadAllText("Properties/SQLServer.txt");
@@ -27,34 +25,40 @@ namespace Test
                 .AddSingleton<GOTurystykaContext>()
                 .AddDbContext<GOTurystykaContext>(options => options.UseSqlServer(server))
                 .BuildServiceProvider();
-
         }
-
-
-        private GOTurystykaContext _context;
 
         [SetUp]
         public void Setup()
         {
             _context = CreateServices().GetRequiredService<GOTurystykaContext>();
         }
-
+        
         [Test]
-        public void Test1()
+        public void TestTouristsThatDontExistReturn404()
         {
-            //Arrange
+            //arrange
+            var invalidId = 10000;
             var systemUnderTest = new TouristsController(_context);
 
-            var res = systemUnderTest.Index().Result;
-            var view = res as ViewResult;
+            //act
+            var res = systemUnderTest.Details(invalidId).Result;
 
-            //Assert
-            view.Should().NotBeNull();
+            //assert
+            res.Should().BeOfType<NotFoundResult>();
         }
-
+        
         [Test]
-        public void TestPointsThatDontExistReturn404()
-        {
+        public void TestTouristsThatExistReturnView(){
+            
+            //Arrange
+            var existingTourist = 1;
+            var systemUnderTest = new TouristsController(_context);
+            
+            //Act
+            var res = systemUnderTest.Details(existingTourist).Result;
+            
+            //Assert
+            res.Should().BeOfType<ViewResult>();
         }
     }
 }

@@ -20,7 +20,7 @@ namespace GOTurystyka.Controllers
 
         public IActionResult Privacy()
         {
-            return View();
+            return Ok();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
