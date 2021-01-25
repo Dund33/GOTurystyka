@@ -60,11 +60,11 @@
                 <a asp-action="Delete" asp-route-id="@item.Trip.Id">Delete</a> |
                 @if (@item.Joined)
                 {
-                    <a asp-action="Leave" asp-route-id="@item.Trip.Id">Leave</a>
+                    <a id="leave_link" asp-action="Leave" asp-route-id="@item.Trip.Id">Leave</a>
                 }
                 else
                 {
-                    <a asp-action="Join" asp-route-id="@item.Trip.Id">Join</a>
+                    <a id="join_link" asp-action="Join" asp-route-id="@item.Trip.Id">Join</a>
                 }
             </td>
         </tr>

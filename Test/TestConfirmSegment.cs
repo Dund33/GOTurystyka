@@ -49,6 +49,8 @@ namespace Test
 
             //Assert
             segment.Approved.Should().BeTrue();
+            _context.Segments.Remove(segment);
+            _context.SaveChanges();
         }
 
         [Test]
@@ -66,6 +68,8 @@ namespace Test
 
             //Assert
             resp.Should().BeOfType<OkObjectResult>();
+            _context.Segments.Remove(segment);
+            _context.SaveChanges();
         }
     }
 }
