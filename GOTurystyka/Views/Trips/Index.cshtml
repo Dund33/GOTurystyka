@@ -58,7 +58,7 @@
                 <a asp-action="Edit" asp-route-id="@item.Trip.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Trip.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Trip.Id">Delete</a> |
-                @if (@item.Joined)
+                @if (item.Joined)
                 {
                     <a id="leave_link" asp-action="Leave" asp-route-id="@item.Trip.Id">Leave</a>
                 }

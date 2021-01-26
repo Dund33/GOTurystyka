@@ -1,8 +1,5 @@
-using System.Runtime.InteropServices;
-using System.Threading;
 using FluentAssertions;
 using NUnit.Framework;
-using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Safari;
 
 namespace Test
@@ -17,11 +14,11 @@ namespace Test
             driver.Url = "https://localhost:5001/Trips";
             var joinTripButton = driver.FindElementById("join_link");
             joinTripButton.Click();
-            driver.Url.Should().Be("https://localhost:5001/Joined");
+            driver.PageSource.Should().Contain("joined");
             driver.Url = "https://localhost:5001/Trips";
             var leaveTripButton = driver.FindElementById("leave_link");
             leaveTripButton.Click();
-            driver.Url.Should().Be("https://localhost:5001/Left");
+            driver.PageSource.Should().Contain("left");
             driver.Close();
         }
     }
