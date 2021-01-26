@@ -65,6 +65,9 @@ namespace GOTurystyka.Controllers
                 Where(r => r.Id == id)
                 .FirstOrDefaultAsync();
 
+            if (route == null)
+                return NotFound();
+            
             if (route.Approved)
             {
                 return Ok("Route is already approved!");

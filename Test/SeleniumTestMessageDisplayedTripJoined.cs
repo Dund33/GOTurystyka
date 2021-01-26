@@ -1,3 +1,4 @@
+using System.Threading;
 using FluentAssertions;
 using NUnit.Framework;
 using OpenQA.Selenium.Safari;
