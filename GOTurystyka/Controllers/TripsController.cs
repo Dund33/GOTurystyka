@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GOTurystyka.Models;
+using Microsoft.CodeAnalysis.Options;
 
 namespace GOTurystyka.Controllers
 {
@@ -20,6 +22,32 @@ namespace GOTurystyka.Controllers
             _context = context;
         }
 
+        [HttpGet]
+        public IActionResult Filter()
+        {
+            return RedirectToAction("Index");
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> Filter(FilterData filterData)
+        {
+            
+            var decoratedTrips = _context.Trips
+                .Where(t => t.Date >= filterData.DateBegin)
+                .Where(t => t.Ended == filterData.Ended)
+                .Include(t => t.Route)
+                .Include(t => t.Tourist)
+                .Select(trip => new TripDecorator
+                {
+                    Trip = trip,
+                    Joined = _context.UsersInTrips
+                        .Where(uit => uit.TripId == trip.Id)
+                        .Any(uit => uit.UserId == UserId)
+                });
+
+            return View("Index", await decoratedTrips.ToListAsync());
+        }
+        
         // GET: Trips
         public async Task<IActionResult> Index()
         {
@@ -34,6 +62,7 @@ namespace GOTurystyka.Controllers
                         .Any(uit => uit.UserId == UserId)
                 });
 
+            
             return View(await decoratedTrips.ToListAsync());
         }
 
@@ -45,7 +74,7 @@ namespace GOTurystyka.Controllers
             var alreadyJoined = await AlreadyJoined(id, UserId);
 
             if (alreadyJoined)
-                return View("Index");
+                return RedirectToAction("Index");
 
             await JoinTrip(id.Value, UserId);
 

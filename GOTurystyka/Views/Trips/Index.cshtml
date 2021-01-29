@@ -8,6 +8,11 @@
 
 <p>
     <a asp-action="Create">Create New</a>
+    <form asp-action="Filter" method="post">
+        <input type="date" id="dateBegin" required name="dateBegin">
+        <input type="checkbox" id="ended" value="true" name="ended">
+        <input type="submit" value="w">
+    </form>
 </p>
 <table class="table">
     <thead>
