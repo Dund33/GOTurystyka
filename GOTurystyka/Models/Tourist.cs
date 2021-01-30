@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Security.AccessControl;
 
 #nullable disable
@@ -19,8 +20,11 @@ namespace GOTurystyka.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }
+        [DisplayName("Born on")]
         public DateTime DateOfBirth { get; set; }
+        [DisplayName("Mobile")]
         public string PhoneNumber { get; set; }
+        [DisplayName("Logged in")]
         public bool LoggedIn { get; set; }
         public string Email { get; set; }
         public string Login { get; set; }

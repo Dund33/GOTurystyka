@@ -19,21 +19,14 @@
                 @Html.DisplayNameFor(model => model.Length)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HasPoints)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.PointsDir1)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PointsDir2)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LicenseForId)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Foreman)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -46,16 +39,10 @@
                 @Html.DisplayFor(modelItem => item.Length)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.HasPoints)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.PointsDir1)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PointsDir2)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LicenseForId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Foreman.Email)
@@ -72,7 +59,6 @@
                 {
                     <a id="approve" asp-action="Approve" asp-route-id="@item.Id">Approve</a>
                     <a id="decline" asp-action="Decline" asp-route-id="@item.Id">Decline</a>
-
                 }
             </td>
         </tr>

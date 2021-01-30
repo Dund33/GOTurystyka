@@ -9,9 +9,11 @@
 <p>
     <a asp-action="Create">Create New</a>
     <form asp-action="Filter" method="post">
+        <label for="dateBegin">Begin date</label>
         <input type="date" id="dateBegin" required name="dateBegin">
+        <label for="ended">Ended</label>
         <input type="checkbox" id="ended" value="true" name="ended">
-        <input type="submit" value="w">
+        <input type="submit" value="Filter">
     </form>
 </p>
 <table class="table">
