@@ -19,6 +19,7 @@ namespace GOTurystyka.Models
         public int Length { get; set; }
         [DisplayName("Number of points")]
         public int NumberOfPoints { get; set; }
+        [DisplayName("Already travelled")]
         public bool AlreadyTravelled { get; set; }
         [DisplayName("Created on")]
         public DateTime DateOfCreation { get; set; }
