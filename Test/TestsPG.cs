@@ -1,5 +1,7 @@
 using System;
+using FluentAssertions;
 using NUnit.Framework;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Safari;
 
 namespace Test
@@ -10,7 +12,7 @@ namespace Test
         public void TestConfirmSegment()
         {
 
-            var driver = new SafariDriver
+            var driver = new ChromeDriver
             {
                 Url = "https://localhost:5001/Segments"
             };
@@ -23,7 +25,7 @@ namespace Test
                 .Click();
             driver
                 .FindElementById("points")
-                .SendKeys("3");
+                .SendKeys("42069");
             driver
                 .FindElementById("length")
                 .SendKeys("3");
@@ -51,6 +53,13 @@ namespace Test
             driver
                 .FindElementById("finish")
                 .Click();
+            driver
+                .Navigate()
+                .GoToUrl("https://localhost:5001/Segments/FinishedSegments");
+            driver
+                .PageSource
+                .Should()
+                .Contain("3");
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using FluentAssertions;
 using NUnit.Framework;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Safari;
 
@@ -13,7 +14,7 @@ namespace Test
         [Test]
         public void TestMessageDisplayedAfterTripJoinedAndLeft()
         {
-            var driver = new SafariDriver {Url = "https://localhost:5001/Trips"};
+            var driver = new ChromeDriver {Url = "https://localhost:5001/Trips"};
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
             var joinTripButton = driver.FindElementById("join_link");
             joinTripButton.Click();

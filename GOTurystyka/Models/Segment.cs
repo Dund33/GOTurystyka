@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -20,8 +21,10 @@ namespace GOTurystyka.Models
         [DisplayName("Score regulated by the commission")]
         public bool HasPoints { get; set; }
         [DisplayName("Points in dir 1")]
+        [Range(0,9999)]
         public int PointsDir1 { get; set; }
         [DisplayName("Points in dir 2")]
+        [Range(0,9999)]
         public int PointsDir2 { get; set; }
         public int? ForemanId { get; set; }
         public int? LicenseForId { get; set; }
